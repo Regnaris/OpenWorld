@@ -156,9 +156,9 @@ void fragment() {
 	float hD = get_height_bicubic(ws_vertex.xz - off.zy);
 	float hU = get_height_bicubic(ws_vertex.xz + off.zy);
 	os_normal = normalize(vec3(
-		hL - hR,
-		hD - hU,
-		2.0 / height_scale
+		(hL - hR),
+		2.0 / height_scale,
+		(hD - hU)
 	));
 	NORMAL = (INV_CAMERA_MATRIX * vec4(os_normal, 0.0)).xyz;
 	
