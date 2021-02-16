@@ -13,7 +13,7 @@ func _ready():
 
 func recieve_hm(heightmap:ViewportTexture):
 	var img = heightmap.get_data()
-	img.save_png("res://terrain/cache/hm.png")
+	img.save_png("user://last_heightmap.png")
 	var hm_tex:ImageTexture = ImageTexture.new()
 	hm_tex.create_from_image(img, Texture.FLAG_MIPMAPS)
 	terrain_material.set_shader_param("heightfield", hm_tex)
@@ -23,8 +23,8 @@ func recieve_hm(heightmap:ViewportTexture):
 # Loads pre-generated clipmesh or generates new
 func get_clip_mesh(lod_size:int, lod_levels:int) -> ArrayMesh:
 	var fl = File.new()
-	var fl_name:String = "cm_{0}_{1}.res".format([lod_size, lod_levels])
-	var path = "res://terrain/cache/" + fl_name
+	var fl_name:String = "clipmap_{0}_{1}.res".format([lod_size, lod_levels])
+	var path = "user://cache/" + fl_name
 	if fl.file_exists(path):
 		var mesh = load(path)
 		if mesh is ArrayMesh:
@@ -36,7 +36,7 @@ func get_clip_mesh(lod_size:int, lod_levels:int) -> ArrayMesh:
 	else:
 		var mesh = gen_clip_mesh(lod_size, lod_levels)
 		ResourceSaver.save(path, mesh)
-		print("Mesh generated and saved")
+		print("Mesh generated and cached")
 		return mesh
 
 # Generates mesh for a clipmap
