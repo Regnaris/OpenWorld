@@ -112,26 +112,4 @@ void fragment() {
 	vec3 noise = fbm(point);
 	
 	COLOR.ba = conv_16bit_to_2x8bit(noise.x);
-	
-	vec3 normal;
-	// Normals by derivatives
-//	vec3 tangent = vec3(1.0,-noise.y,0.0);
-//	vec3 binorm = vec3(0.0,-noise.z,1.0);
-//	normal = cross(tangent,binorm);
-//	//normal.x = -noise.y;
-//	//normal.z = -noise.z;
-//	//normal.y = 1.0;
-	
-	// Normals by finite difference
-	vec3 off = vec3(1.0, 1.0, 0.0) * (1.0 / 1024.0);
-	float hL = fbm(point - off.xz).x;
-	float hR = fbm(point + off.xz).x;
-	float hD = fbm(point - off.zy).x;
-	float hU = fbm(point + off.zy).x;
-	normal.x = hL - hR;
-	normal.y = hD - hU;
-	normal.z = 2.0 * (1.0 / 1024.0);
-	
-	normal = normalize(normal);
-	COLOR.rg = (normal.xy + 1.0) / 2.0;
 }

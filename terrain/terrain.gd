@@ -11,11 +11,6 @@ func _ready():
 	HM_Gen.connect("heightmap_ready", self, "recieve_hm", [], CONNECT_ONESHOT)
 
 
-func _physics_process(delta):
-	if Input.is_action_just_pressed("ui_accept"):
-		terrain_material.set_shader_param("runtime_normals", !terrain_material.get_shader_param("runtime_normals"))
-
-
 func recieve_hm(heightmap:ViewportTexture):
 	var img = heightmap.get_data()
 	img.save_png("res://terrain/cache/hm.png")

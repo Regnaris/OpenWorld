@@ -149,29 +149,17 @@ void fragment() {
 	
 	
 	vec3 os_normal;
-	if (runtime_normals) {
-		// Calculate normals using finite difference method
-		vec3 off = vec3(1.0, 1.0, 0.0);
-		float hL = get_height_bicubic(ws_vertex.xz - off.xz);
-		float hR = get_height_bicubic(ws_vertex.xz + off.xz);
-		float hD = get_height_bicubic(ws_vertex.xz - off.zy);
-		float hU = get_height_bicubic(ws_vertex.xz + off.zy);
-		os_normal = normalize(vec3(
-			hL - hR,
-			hD - hU,
-			2.0 / height_scale
-		));
-	} else {
-		// Get normal data from heightmap and calculate normal in worldspace and view space
-		vec2 hf_size = vec2(textureSize(heightfield, 0));
-		vec2 norm_data = texture(heightfield, ((ws_vertex.xz / meters_per_texel) / hf_size) + vec2(0.5), 0).rg;
-		norm_data = norm_data * 2.0 - 1.0;
-		os_normal = normalize(vec3(
-			norm_data.x,
-			-norm_data.y,
-			sqrt(max(0.0, 1.0 - dot(norm_data.xy, norm_data.xy)))
-		));
-	}
+	// Calculate normals using finite difference method
+	vec3 off = vec3(1.0, 1.0, 0.0);
+	float hL = get_height_bicubic(ws_vertex.xz - off.xz);
+	float hR = get_height_bicubic(ws_vertex.xz + off.xz);
+	float hD = get_height_bicubic(ws_vertex.xz - off.zy);
+	float hU = get_height_bicubic(ws_vertex.xz + off.zy);
+	os_normal = normalize(vec3(
+		hL - hR,
+		hD - hU,
+		2.0 / height_scale
+	));
 	NORMAL = (INV_CAMERA_MATRIX * vec4(os_normal, 0.0)).xyz;
 	
 	vec3 dirt_albedo;
